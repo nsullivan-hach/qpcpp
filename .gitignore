@@ -59,3 +59,5 @@ QSpy/
 lib/
 obj/
 output/
+
+.DS_Store
