@@ -238,7 +238,15 @@ void QS::onFlush(void) {
 QSTimeCtr QS::onGetTime(void) {
     struct timespec tspec;
     QSTimeCtr time;
+        
+    // NOTE: One could use "gcc -dM -E - < /dev/null" command on host computer to find exact OS type. Look for,
+    //       MAC   OS --> __APPLE__ or __MACH__
+    //       Linux OS --> __linux__ or __unix__
+#ifdef __APPLE__
+    clock_gettime(CLOCK_MONOTONIC, &tspec);
+#else
     clock_gettime(CLOCK_MONOTONIC_RAW, &tspec);
+#endif
 
     // convert to units of 0.1 microsecond
     time = (QSTimeCtr)(tspec.tv_sec * 10000000 + tspec.tv_nsec / 100);
